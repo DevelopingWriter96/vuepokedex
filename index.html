@@ -5,9 +5,12 @@
 <body>
 <div id="pokedexapp">
     <h1>{{message}}</h1>
+    <div>{{selectedPokemon}}</div>
+    <button>Toggle Favorite</button>
+    <button>Sort Favorites</button>
     <button @click="getPokemonList">Load Pokemon</button>
     <ul v-for="pokemon in pokemonList" :key="pokemon.name">
-        <li>{{pokemon.name}}</li>
+        <li @click="getPokemonData">{{pokemon.name}}</li>
     </ul>
 </div>
 
@@ -20,7 +23,8 @@
         data() {
             return {
                 message: 'Pokemon Gens 1-4',
-                pokemonList: []
+                pokemonList: [],
+                selectedPokemon: {}
             }
         },
         methods: {
@@ -31,6 +35,9 @@
                         console.log = data;
                         this.pokemonList = data.results
                     }) 
+            },
+            getPokemonData(name) {
+                console.log(name);
             }
         }
     }).mount('#pokedexapp')
