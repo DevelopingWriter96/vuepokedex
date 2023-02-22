@@ -28,6 +28,7 @@
                 fetch('https://pokeapi.co/api/v2/pokemon?limit=493')
                     .then(res => res.json())
                     .then(data => {
+                        console.log = data;
                         this.pokemonList = data.results
                     }) 
             }
