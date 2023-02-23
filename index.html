@@ -5,12 +5,14 @@
 <body>
 <div id="pokedexapp">
     <h1>{{message}}</h1>
-    <div><p>{{selectedPokemon}}</p></div>
+    <div><h2>Name: {{selectedPokemon.name}}</h2>
+        <!-- <img src={{src}}> -->
+    </div>
     <button>Toggle Favorite</button>
     <button>Sort Favorites</button>
     <button @click="getPokemonList">Load Pokemon</button>
     <ul v-for="pokemon in pokemonList" :key="pokemon.name">
-        <li @click="getPokemonData">{{pokemon.name}}</li>
+        <li @click="getPokemonData(pokemon.url)">{{pokemon.name}}</li>
     </ul>
 </div>
 
@@ -24,7 +26,8 @@
             return {
                 message: 'Pokemon Gens 1-4',
                 pokemonList: [],
-                selectedPokemon: {}
+                selectedPokemon: {},
+                // src: ""
             }
         },
         methods: {
@@ -32,16 +35,19 @@
                 fetch('https://pokeapi.co/api/v2/pokemon?limit=493')
                     .then(res => res.json())
                     .then(data => {
-                        console.log = data.results;
+                        console.log(data.results)
                         this.pokemonList = data.results
                     }) 
             },
-            getPokemonData() {
-                fetch('https://pokeapi.co/api/v2/pokemon-form/249/')
+            getPokemonData(url) {
+                fetch(url)
                     .then(res => res.json())
                     .then(data => {
-                        console.log = data.results;
-                        this.selectedPokemon = data.results
+                        console.log(data)
+                        this.selectedPokemon = data
+                        console.log(data.sprites.front_default)
+                        this.src = data.sprites.front_default
+                        console.log(this.src)
                     })
             }
         }
@@ -49,9 +55,13 @@
 </script>
 
 <style>
+    ul li {
+        list-style-type: none;
+    }
+
     .normal {
         color: #a8a878;
-    } 
+    }
 
     .fighting {
         color: #c03028;
