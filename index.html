@@ -5,7 +5,7 @@
 <body>
 <div id="pokedexapp">
     <h1>{{message}}</h1>
-    <div>{{selectedPokemon}}</div>
+    <div><p>{{selectedPokemon}}</p></div>
     <button>Toggle Favorite</button>
     <button>Sort Favorites</button>
     <button @click="getPokemonList">Load Pokemon</button>
@@ -32,12 +32,17 @@
                 fetch('https://pokeapi.co/api/v2/pokemon?limit=493')
                     .then(res => res.json())
                     .then(data => {
-                        console.log = data;
+                        console.log = data.results;
                         this.pokemonList = data.results
                     }) 
             },
-            getPokemonData(name) {
-                console.log(name);
+            getPokemonData() {
+                fetch('https://pokeapi.co/api/v2/pokemon-form/249/')
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log = data.results;
+                        this.selectedPokemon = data.results
+                    })
             }
         }
     }).mount('#pokedexapp')
