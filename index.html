@@ -56,10 +56,10 @@
                 message: 'Pokemon Gens 1-4',
                 pokemonList: [],
                 selectedPokemon: {},
-                favorites: [],
                 pokemonType: [],
-                type: "",
                 src: "",
+                type: "",
+                favorites: [],
                 typeSort: [] 
             }
         },
@@ -87,15 +87,15 @@
             },
             toggleFavoritePokemon(pokemon) {
                 console.log(pokemon)
-                this.favorites.push('pokemon');
-                console.log(favorites);
+                // this.favorites.push(pokemon);
+                // console.log(favorites);
             },
             loadFavorites() {
                 this.pokemonList = favorites;
             },
             sortByType(event) {
-                let type = event.target.value;
-                console.log(type);
+                // this.type = event.target.value;
+                // console.log(type);
                 // fetch('https://pokeapi.co/api/v2/pokemon?limit=493')
                 //     .then(res => res.json())
                 //     .then(data => {
