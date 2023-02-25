@@ -15,11 +15,11 @@
         <h3>Weight: {{selectedPokemon.weight / 10}} KG</h3>
     </div>
     <div>
-    <button @click="toggleFavoritePokemon(selectedPokemon.name)">Toggle Favorite</button>
+    <button @click="addFavoritePokemon(selectedPokemon.name, selectedPokemon.id)">Toggle Favorite</button>
     <button @click="loadFavorites">Sort Favorites</button>
     <button @click="getPokemonList">Load Pokemon</button>
     <select name="type" @change="sortByType($event)">
-        <option value="Sort By Type">Sort By type</option>
+        <option value="type">Sort by Type</option>
         <option @click="sortByType(normal)" value="normal">Normal</option>
         <option @click="sortByType(fire)" value="fire">Fire</option>
         <option @click="sortByType(water)" value="water">Water</option>
@@ -60,7 +60,8 @@
                 src: "",
                 type: "",
                 favorites: [],
-                typeSort: [] 
+                typeSort: [],
+                pokeBall: {} 
             }
         },
         methods: {
@@ -85,35 +86,33 @@
                         console.log(data.types)
                     })
             },
-            toggleFavoritePokemon(pokemon) {
-                console.log(pokemon)
-                // this.favorites.push(pokemon);
-                // console.log(favorites);
+            addFavoritePokemon(pokemon, num) {
+                this.pokeBall = {name: pokemon, url: `https://pokeapi.co/api/v2/pokemon/${num}/`};
+                console.log(this.pokeBall);
+                if (this.favorites.find(favoritePokemon => favoritePokemon.name === pokemon)){
+                    this.favorites.splice((this.favorites.indexOf(pokemon)-1), 1);
+                } else {
+                    this.favorites.push(this.pokeBall);
+                    console.log(this.favorites); 
+                }
             },
             loadFavorites() {
-                this.pokemonList = favorites;
+                this.pokemonList = this.favorites;
             },
             sortByType(event) {
-                // this.type = event.target.value;
-                // console.log(type);
-                // fetch('https://pokeapi.co/api/v2/pokemon?limit=493')
-                //     .then(res => res.json())
-                //     .then(data => {
-                //         console.log(data.results)
-                //         this.pokemonList = data.results
-                //     })
-                // pokemonList.foreach((pokemon) => {
-                //     fetch (pokemon.url)
-                //         .then(res => res.json())
-                //         .then(data => {
-                //             let types = data.types
-                //             types.foreach((type) => {
-                //                 if (type === type) {
-                //                     console.log(data.name);
-                //                 } 
-                //             })
-                //         })
-                // }) 
+                this.type = event.target.value;
+                console.log(this.type);
+                this.pokemonList.forEach(pokemon => {
+                    console.log(pokemon.url)
+                    fetch(pokemon.url)
+                        .then(res => res.json)
+                        .then(data => {
+                            console.log(data.results);
+                            data.types.foreach(type => {
+                                console.log(type.type.name);
+                            })
+                        })
+                });
             }
         }
     }).mount('#pokedexapp')
@@ -130,6 +129,7 @@
         text-align: center;
         width: 10%;
         padding: 0.5%;
+        
     }
 
     .fighting {
@@ -202,6 +202,7 @@
         text-align: center;
         width: 10%;
         padding: 0.5%;
+        /* 33 pokemon */
     } 
     
     .water {
