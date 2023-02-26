@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <title>My Pokedex - Organize your Pokemon Gen 1-4!</title>
+    <title>My Pokedex - Organize your Pokemon!</title>
 </head>
 <body>
 <div id="pokedexapp">
@@ -18,8 +18,7 @@
     <button @click="addFavoritePokemon(selectedPokemon.name, selectedPokemon.id)">Toggle Favorite</button>
     <button @click="loadFavorites">Sort Favorites</button>
     <button @click="getPokemonList">Load Pokemon</button>
-    <select name="type" @change="sortByType($event)">
-        <option value="type">Sort by Type</option>
+    <select v-model="type" @change="sortByType($event)">
         <option @click="sortByType(normal)" value="normal">Normal</option>
         <option @click="sortByType(fire)" value="fire">Fire</option>
         <option @click="sortByType(water)" value="water">Water</option>
@@ -41,6 +40,9 @@
     </select>
     <ul v-for="pokemon in pokemonList" :key="pokemon.name">
         <li @click="getPokemonData(pokemon.url)">{{pokemon.name}}</li>
+    </ul>
+    <ul v-for="pokemon in typeSort" :key="pokemon.pokemon.name">
+        <li @click="getPokemonData(pokemon.pokemon.url)">{{pokemon.pokemon.name}}</li>
     </ul>
     </div>
 </div>
@@ -66,7 +68,7 @@
         },
         methods: {
             getPokemonList() {
-                fetch('https://pokeapi.co/api/v2/pokemon?limit=493')
+                fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
                     .then(res => res.json())
                     .then(data => {
                         console.log(data.results)
@@ -102,17 +104,12 @@
             sortByType(event) {
                 this.type = event.target.value;
                 console.log(this.type);
-                this.pokemonList.forEach(pokemon => {
-                    console.log(pokemon.url)
-                    fetch(pokemon.url)
-                        .then(res => res.json)
+                    fetch(`https://pokeapi.co/api/v2/type/${this.type}/`)
+                        .then(res => res.json())
                         .then(data => {
-                            console.log(data.results);
-                            data.types.foreach(type => {
-                                console.log(type.type.name);
-                            })
+                            console.log(data);
+                            this.typeSort = data.pokemon;
                         })
-                });
             }
         }
     }).mount('#pokedexapp')
